@@ -1860,6 +1860,27 @@ html,body{
     #25351B 100%)!important;
 }
 </style>
+
+<style id="final-structural-reset-20261004">
+/* FINAL STRUCTURAL RESET 2026-10-04 */
+/* Uma única superfície estrutural: sem placas, bordas ou sombras sob os cards */
+html,body,#app,#home,#home.screen,#home .view,#home .tower,#home .grid,#home .pbody,#home .hlist,#home .evsecs{
+ border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important;
+ background:transparent!important;background-image:none!important;
+}
+html,body,#app{
+ background:linear-gradient(180deg,#009C3B 0%,#06150B 30%,#000000 60%,#25351B 75%,#25351B 100%)!important;
+}
+#home .view,#home .tower,#home .grid,#home .pbody,#home .hlist,#home .evsecs{overflow-x:hidden!important}
+#home .view::before,#home .view::after,#home .tower::before,#home .tower::after,#home .grid::before,#home .grid::after,#home .pbody::before,#home .pbody::after,#home .hlist::before,#home .hlist::after,#home .evsecs::before,#home .evsecs::after{content:none!important;display:none!important;border:0!important;background:none!important;box-shadow:none!important}
+/* Splash isolado do shell interno */
+#splash{inset:0!important;padding:0!important;background:#000!important;overflow:hidden!important;border:0!important;box-shadow:none!important}
+#splash::before,#splash::after{content:none!important;display:none!important}
+/* Prática: mesma caixa tipográfica para os dois títulos inferiores */
+#home .tower .tile.tcard .htx{grid-template-rows:40px 48px!important;height:88px!important;min-height:88px!important;max-height:88px!important;align-items:start!important}
+#home .tower .tile.tcard .htx b{height:40px!important;min-height:40px!important;max-height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1.25!important;width:100%!important}
+#home .tower .tile.tcard .htx small{height:48px!important;min-height:48px!important;max-height:48px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;line-height:1.3!important;width:100%!important}
+</style>
 </head>
 <body>
 <div id="app">
