@@ -1831,6 +1831,18 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app #home .tabbar::before,#app #home .tabbar::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
 #app #home .tab{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
 #app #home .tab.on{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
+
+/* HOTFIX VISUAL 2026-10-04 — residual background, splash, practice alignment */
+#app #home,#app #home #view,#app #home .view,#app #home .tower,#app #home .tower.scroll,#app #home .tower.scroll.practice-four{background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;outline:0!important;box-shadow:none!important}
+#app #home #view::before,#app #home #view::after,#app #home .view::before,#app #home .view::after,#app #home .tower::before,#app #home .tower::after,#app #home .tower.scroll.practice-four::before,#app #home .tower.scroll.practice-four::after{content:none!important;display:none!important}
+#app #home .cards,#app #home #homeCards{display:none!important}
+#app #home .tower.scroll.practice-four>.tile.tcard{position:relative!important;background-clip:padding-box!important}
+#app #home .tower.scroll.practice-four>.tile.tcard[data-open="hist"] .htx b{display:flex!important;align-items:flex-start!important;justify-content:center!important;height:30px!important;min-height:30px!important;max-height:30px!important;padding:0!important;margin:0!important;line-height:1.15!important}
+#app #home .tower.scroll.practice-four>.tile.tcard[data-open="hist"] .htx,#app #home .tower.scroll.practice-four>.tile.tcard[data-open="hist"] .htx small{margin-top:0!important}
+#app #splash .spcards,#app #splash .sphalo{display:none!important}
+#app #splash .spcore .logo{animation:none!important;transform:none!important;rotate:0deg!important;opacity:1!important}
+#app #splash .spname{animation:none!important;opacity:1!important;transform:rotate(-5deg)!important}
+
 </style>
 </head>
 <body>
