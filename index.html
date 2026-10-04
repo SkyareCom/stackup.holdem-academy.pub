@@ -1789,6 +1789,15 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app .screen:not(#welcome):not(#login):not(#splash),
 #app .screen:not(#welcome):not(#login):not(#splash) *,
 #app #view,#app #view *,#app nav,#app nav *,#app footer,#app footer *{font-family:'Saira Semi Condensed',sans-serif!important;font-style:normal!important}
+
+/* EVOLUTION CARD TYPOGRAPHY — 2026-10-04 */
+/* Minha Evolução: impedir estouro e devolver hierarquia 14/12/10 */
+#app #view .kpi,#app #view .stat,#app #view .metric,#app #view .goal{min-width:0!important;overflow:hidden!important}
+#app #view .kpi *,#app #view .stat *,#app #view .metric *,#app #view .goal *{max-width:100%!important;overflow-wrap:anywhere!important}
+#app #view .kpi,#app #view .stat,#app #view .metric,#app #view .goal{font-size:12px!important}
+#app #view .kpi strong,#app #view .stat strong,#app #view .metric strong,#app #view .goal strong{font-size:14px!important;line-height:1.15!important}
+#app #view button,#app #view .chip,#app #view .pill{font-size:12px!important;line-height:1.15!important}
+#app #view small,#app #view .hint,#app #view .meta{font-size:10px!important;line-height:1.25!important}
 </style>
 </head>
 <body>
