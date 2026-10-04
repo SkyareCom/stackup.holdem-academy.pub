@@ -18,7 +18,7 @@
 :root{--red:#e8262d;--red2:#ff3b3b;--txt:#fff;--mut:#c9bcbc;--line:rgba(232,38,45,.35)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#0b0304;overscroll-behavior:none}
-body{font-family:'Saira Semi Condensed',system-ui,sans-serif;color:var(--txt);overflow:hidden}
+body{font-family:'Saira Semi Condensed',sans-serif;color:var(--txt);overflow:hidden}
 #app{position:fixed;inset:0;max-width:520px;margin:0 auto;overflow:hidden;
  background:radial-gradient(ellipse at 50% 22%,#3b0a0d 0%,#1a0507 48%,#0b0304 100%)}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 16px) 20px calc(env(safe-area-inset-bottom) + 20px);
@@ -37,7 +37,7 @@ body{font-family:'Saira Semi Condensed',system-ui,sans-serif;color:var(--txt);ov
 @media (min-width:438px){}
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:clamp(8px,5vh,56px)}
 .hero .logo{width:min(200px,50vw,26vh);filter:drop-shadow(0 0 22px rgba(232,38,45,.55)) drop-shadow(0 8px 14px rgba(0,0,0,.8))}
-.title{font-family:''Saira Semi Condensed'',Impact,sans-serif;font-size:clamp(58px,19vw,84px);line-height:.95;color:#ee2b31;margin-top:-10px;transform:rotate(-5deg);letter-spacing:1px;text-shadow:0 0 22px rgba(232,38,45,.45),0 5px 0 #4a080b,0 10px 18px rgba(0,0,0,.8)}
+.title{font-family:'Saira Semi Condensed',sans-serif;font-size:clamp(58px,19vw,84px);line-height:.95;color:#ee2b31;margin-top:-10px;transform:rotate(-5deg);letter-spacing:1px;text-shadow:0 0 22px rgba(232,38,45,.45),0 5px 0 #4a080b,0 10px 18px rgba(0,0,0,.8)}
 .tag{margin-top:12px;font-weight:800;letter-spacing:2px;font-size:14px;color:#e6e0e0;transform:rotate(-5deg);text-transform:uppercase}
 .menu{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:20px}
 @media (max-height:760px){.item{padding:12px 14px}.item .ic{width:28px;height:28px}.txt small{font-size:11.5px}.hero{margin-top:4px}}
@@ -118,9 +118,9 @@ label{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-tran
 
 /* brand block */
 .brand{display:flex;flex-direction:column;align-items:center;transform:rotate(-5deg);margin-top:-4px}
-.brand .sub{font-family:'Saira Semi Condensed',''Saira Semi Condensed'',Impact,sans-serif;color:#fff;font-size:clamp(17px,min(5.6vw,2.9vh),26px);letter-spacing:1.5px;line-height:1;
+.brand .sub{font-family:'Saira Semi Condensed',sans-serif;color:#fff;font-size:clamp(17px,min(5.6vw,2.9vh),26px);letter-spacing:1.5px;line-height:1;
  text-shadow:0 2px 0 rgba(0,0,0,.6),0 0 12px rgba(0,0,0,.6);margin-bottom:-2px}
-.title{font-family:'Saira Semi Condensed',''Saira Semi Condensed'',Impact,sans-serif!important;transform:none!important;margin-top:0!important}
+.title{font-family:'Saira Semi Condensed',sans-serif!important;transform:none!important;margin-top:0!important}
 .tag{display:inline-block;margin-top:14px!important;padding:9px 18px;border-radius:14px;font-size:12.5px!important;
  background:linear-gradient(180deg,rgba(50,12,14,.62),rgba(16,5,6,.72));border:1px solid var(--line);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(232,38,45,.12);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -172,7 +172,7 @@ label{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-tran
 .hdr .logo{width:44px!important;margin:0!important;filter:drop-shadow(0 0 8px rgba(160,20,28,.35))}
 .hdrTxt{display:flex;flex-direction:column;line-height:1}
 .hdrTxt small{font:800 10px 'Saira Semi Condensed';letter-spacing:1px;color:#fff}
-.hdrTxt b{font-family:'Saira Semi Condensed',''Saira Semi Condensed'',Impact,sans-serif;font-weight:400;font-size:26px;color:#c8222a;letter-spacing:1px}
+.hdrTxt b{font-family:'Saira Semi Condensed',sans-serif;font-weight:400;font-size:26px;color:#c8222a;letter-spacing:1px}
 .hello{margin-left:auto;font-size:12px;font-weight:700;color:#d9c4c4;max-width:40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .view{position:relative;z-index:2;flex:1;min-height:0;overflow-y:auto;padding:4px 2px 12px}
 .view.in{animation:vin .28s ease both}@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -260,10 +260,10 @@ label{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-tran
 .soon{padding-top:18vh!important}
 
 /* ===== condensed UI font (logo block frozen) ===== */
-#app *:not(#_){font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important}
+#app *:not(#_){font-family:'Saira Semi Condensed',sans-serif!important}
 #app #welcome .brand .sub:not(#_):not(#__){font-family:'Saira Semi Condensed',sans-serif!important}
 #app #welcome .tag:not(#_):not(#__){letter-spacing:1.5px!important}
-#app #welcome .brand .title:not(#_):not(#__){font-family:'Saira Semi Condensed',''Saira Semi Condensed'',Impact,sans-serif!important}
+#app #welcome .brand .title:not(#_):not(#__){font-family:'Saira Semi Condensed',sans-serif!important}
 #app .txt b,#app .tile span,#app .tab span,#app .hdrTitle,#app .btn{letter-spacing:.6px!important}
 
 /* ===== ACADEMY THEME ===== */
@@ -1167,7 +1167,7 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 
 /* Tipografia do app interno. */
 #app #home *:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______){
-  font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important;
+  font-family:'Saira Semi Condensed',sans-serif!important;
 }
 #app #home .pc:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______),
 #app #home .pc *:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______),
@@ -1604,7 +1604,7 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
    - rodape 9px;
    - branding/logo da entrada preservado exatamente como antes. */
 #app *:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______):not(#________):not(.card):not(.pc):not(.rank):not(.suit):not(.fv-rank):not(.fv-suit){
-  font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important;
+  font-family:'Saira Semi Condensed',sans-serif!important;
   font-size:12px!important;
 }
 
@@ -1612,7 +1612,7 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app #home .tile.tcard .htx small:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______):not(#________):not(#_________),
 #app #home .tile.tcard .d2:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______):not(#________):not(#_________),
 #app #home .tile.tcard .d2>span:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______):not(#________):not(#_________){
-  font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important;
+  font-family:'Saira Semi Condensed',sans-serif!important;
   font-size:10px!important;
 }
 
@@ -1642,7 +1642,7 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 
 /* Rodape: 9px. */
 #app .tabbar .tab span:not(#_):not(#__):not(#___):not(#____):not(#_____):not(#______):not(#_______):not(#________):not(#_________){
-  font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important;
+  font-family:'Saira Semi Condensed',sans-serif!important;
   font-size:9px!important;
 }
 
@@ -1788,7 +1788,7 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 /* INTERNAL TYPOGRAPHY — SAIRA SEMI CONDENSED ONLY — 2026-10-04 */
 #app .screen:not(#welcome):not(#login):not(#splash),
 #app .screen:not(#welcome):not(#login):not(#splash) *,
-#app #view,#app #view *,#app nav,#app nav *,#app footer,#app footer *{font-family:'Saira Semi Condensed','Saira Semi Condensed',sans-serif!important;font-style:normal!important}
+#app #view,#app #view *,#app nav,#app nav *,#app footer,#app footer *{font-family:'Saira Semi Condensed',sans-serif!important;font-style:normal!important}
 </style>
 </head>
 <body>
