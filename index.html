@@ -1813,6 +1813,17 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app #home .view::before,#app #home .view::after,#app #home .pbody::before,#app #home .pbody::after,#app #home .grid::before,#app #home .grid::after,#app #home .tower::before,#app #home .tower::after,#app #home .hlist::before,#app #home .hlist::after,#app #home .evsecs::before,#app #home .evsecs::after{content:none!important;display:none!important;background:none!important;border:0!important;box-shadow:none!important}
 /* No decorative playing cards on login/welcome or initial Home */
 #app #welcome>.cards,#app #home>#homeCards{display:none!important}
+
+/* RESIDUAL BOTTOM BACKGROUND FIX — 2026-10-04 */
+/* fundo único até o rodapé: elimina as pontas/placa residual vistas nas telas internas */
+#app #home{background:transparent!important;background-image:none!important}
+#app #home .view{background:transparent!important;background-image:none!important;border-radius:0!important;box-shadow:none!important}
+#app #home .view>div:not(.tile):not(.pcard):not(.evsec):not(.qcard):not(.lesson){background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+/* neutraliza qualquer overlay decorativo no fim da área de conteúdo */
+#app #home .view::before,#app #home .view::after{display:none!important;content:none!important}
+/* Prática: títulos da última linha no mesmo eixo visual */
+#app #home .tower .tcard .htx{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:center!important}
+#app #home .tower .tcard .htx b{display:flex!important;align-items:center!important;justify-content:center!important;min-height:2.8em!important;height:2.8em!important;line-height:1.4em!important;white-space:normal!important}
 </style>
 </head>
 <body>
