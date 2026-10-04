@@ -1831,6 +1831,34 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app #home .tabbar::before,#app #home .tabbar::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
 #app #home .tab{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
 #app #home .tab.on{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
+
+/* SINGLE APP BACKGROUND RESET — 2026-10-04 */
+/* Zera fundos estruturais: apenas os cards/componentes mantêm seus próprios fundos */
+html,body,#app,#home,#home .screen,#home .view,#home .pbody,#home .grid,#home .tower,#home .hlist,#home .evsecs{
+  background:none!important;background-image:none!important;
+}
+#home .view::before,#home .view::after,#home .pbody::before,#home .pbody::after,
+#home .grid::before,#home .grid::after,#home .tower::before,#home .tower::after,
+#home .hlist::before,#home .hlist::after,#home .evsecs::before,#home .evsecs::after{
+  content:none!important;display:none!important;background:none!important;background-image:none!important;
+}
+/* Fundo único contínuo solicitado */
+html,body{
+  background:linear-gradient(180deg,
+    #009C3B 0%,
+    #06150B 30%,
+    #000000 60%,
+    #25351B 75%,
+    #25351B 100%)!important;
+}
+#app{
+  background:linear-gradient(180deg,
+    #009C3B 0%,
+    #06150B 30%,
+    #000000 60%,
+    #25351B 75%,
+    #25351B 100%)!important;
+}
 </style>
 </head>
 <body>
