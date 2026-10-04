@@ -1806,6 +1806,31 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app .cards .card:nth-child(2){display:block!important;transform:rotate(14deg) translateX(7%)!important}
 #app .cards .card i{font-size:calc(var(--w)*.18)!important;line-height:.88!important;opacity:.9!important}
 #app .cards .card b{display:grid!important;font-size:calc(var(--w)*.44)!important;opacity:.20!important}
+
+/* CLEAN APP BACKGROUND + DECORATIVE CARDS SCOPE — 2026-10-04 */
+/* Remove secondary sheet/background behind internal card groups */
+#app #home .view,#app #home .pbody,#app #home .grid,#app #home .tower,#app #home .hlist,#app #home .evsecs{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;outline:0!important}
+#app #home .view::before,#app #home .view::after,#app #home .pbody::before,#app #home .pbody::after,#app #home .grid::before,#app #home .grid::after,#app #home .tower::before,#app #home .tower::after,#app #home .hlist::before,#app #home .hlist::after,#app #home .evsecs::before,#app #home .evsecs::after{content:none!important;display:none!important;background:none!important;border:0!important;box-shadow:none!important}
+/* No decorative playing cards on login/welcome or initial Home */
+#app #welcome>.cards,#app #home>#homeCards{display:none!important}
+
+/* RESIDUAL BOTTOM BACKGROUND FIX — 2026-10-04 */
+/* fundo único até o rodapé: elimina as pontas/placa residual vistas nas telas internas */
+#app #home{background:transparent!important;background-image:none!important}
+#app #home .view{background:transparent!important;background-image:none!important;border-radius:0!important;box-shadow:none!important}
+#app #home .view>div:not(.tile):not(.pcard):not(.evsec):not(.qcard):not(.lesson){background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+/* neutraliza qualquer overlay decorativo no fim da área de conteúdo */
+#app #home .view::before,#app #home .view::after{display:none!important;content:none!important}
+/* Prática: títulos da última linha no mesmo eixo visual */
+#app #home .tower .tcard .htx{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:center!important}
+#app #home .tower .tcard .htx b{display:flex!important;align-items:center!important;justify-content:center!important;min-height:2.8em!important;height:2.8em!important;line-height:1.4em!important;white-space:normal!important}
+
+/* TABBAR CORNER ARTIFACT FIX — 2026-10-04 */
+/* As pontas eram do gradiente/faixa do próprio rodapé, não dos cards. */
+#app #home .tabbar{background:#06391a!important;background-image:none!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+#app #home .tabbar::before,#app #home .tabbar::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
+#app #home .tab{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
+#app #home .tab.on{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
 </style>
 </head>
 <body>
