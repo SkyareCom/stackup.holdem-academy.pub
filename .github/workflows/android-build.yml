@@ -101,8 +101,8 @@ jobs:
           BADGING="$($AAPT dump badging "$APK" | head -n 1)"
           VERSION_NAME="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionName='\\([^']*\\)'.*/\\1/p")"
           VERSION_CODE="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionCode='\\([^']*\\)'.*/\\1/p")"
-          test "$VERSION_NAME" = "2.1.9"
-          test "$VERSION_CODE" = "225"
+          test "$VERSION_NAME" = "2.1.10"
+          test "$VERSION_CODE" = "226"
           {
             echo "package=com.skyare.stackupacademy"
             echo "versionName=$VERSION_NAME"
