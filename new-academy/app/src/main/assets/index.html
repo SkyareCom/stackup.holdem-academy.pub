@@ -701,11 +701,32 @@ button{appearance:none;border:none;outline:none;background:none;}
   <section id="stackup-modal" class="auth-modal" aria-modal="true" role="dialog">
     <form id="stackup-form" class="auth-card">
       <div class="auth-title">STACKUP ID</div>
-      <div class="auth-copy">Entre com seu StackUp ID na própria tela de entrada.</div>
-      <input id="stackup-id" class="auth-input" type="text" autocomplete="username" placeholder="E-MAIL OU STACKUP ID" required>
-      <input id="stackup-password" class="auth-input" type="password" autocomplete="current-password" placeholder="SENHA" required>
+      <div class="auth-copy">Seu StackUp ID é o e-mail da sua conta StackUp Hold'em.</div>
+      <input id="stackup-id" class="auth-input" type="email" autocomplete="username" placeholder="E-MAIL" required>
+      <input id="stackup-password" class="auth-input" type="password" autocomplete="current-password" placeholder="SENHA" minlength="6" required>
       <button class="auth-btn" type="submit">ENTRAR</button>
+      <button id="stackup-forgot" class="auth-cancel" type="button">ESQUECI MINHA SENHA</button>
       <button class="auth-cancel" data-auth-close="stackup-modal" type="button">CANCELAR</button>
+    </form>
+  </section>
+  <section id="stackup-create-modal" class="auth-modal" aria-modal="true" role="dialog">
+    <form id="stackup-create-form" class="auth-card">
+      <div class="auth-title">CRIAR CONTA STACKUP HOLD'EM</div>
+      <div class="auth-copy">Uma única conta para os aplicativos StackUp Hold'em. Seu StackUp ID será seu e-mail.</div>
+      <input id="stackup-create-name" class="auth-input" type="text" autocomplete="name" placeholder="NOME" required>
+      <input id="stackup-create-email" class="auth-input" type="email" autocomplete="email" placeholder="E-MAIL" required>
+      <input id="stackup-create-password" class="auth-input" type="password" autocomplete="new-password" placeholder="SENHA · MÍNIMO 6 CARACTERES" minlength="6" required>
+      <button class="auth-btn" type="submit">CRIAR CONTA</button>
+      <button class="auth-cancel" data-auth-close="stackup-create-modal" type="button">CANCELAR</button>
+    </form>
+  </section>
+  <section id="stackup-recovery-modal" class="auth-modal" aria-modal="true" role="dialog">
+    <form id="stackup-recovery-form" class="auth-card">
+      <div class="auth-title">NOVA SENHA</div>
+      <div class="auth-copy">Defina uma nova senha para seu StackUp ID.</div>
+      <input id="stackup-recovery-password" class="auth-input" type="password" autocomplete="new-password" placeholder="NOVA SENHA · MÍNIMO 6 CARACTERES" minlength="6" required>
+      <button class="auth-btn" type="submit">SALVAR NOVA SENHA</button>
+      <button class="auth-cancel" data-auth-close="stackup-recovery-modal" type="button">CANCELAR</button>
     </form>
   </section>
 </main>
@@ -734,11 +755,25 @@ button{appearance:none;border:none;outline:none;background:none;}
   document.querySelector('[data-action="biometria"]').addEventListener('click',()=>{bioScreen.style.display='flex';});
   document.querySelectorAll('[data-auth-close]').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();closeModal(btn.dataset.authClose)}));
   document.getElementById('bio-back').addEventListener('click',()=>{bioScreen.style.display='none';});
-  document.getElementById('google-enter').addEventListener('click',()=>{if(window.AndroidAuth&&AndroidAuth.googleLogin)AndroidAuth.googleLogin();});
+  document.getElementById('google-enter').addEventListener('click',()=>{if(window.AndroidAuth&&AndroidAuth.googleLogin){AndroidAuth.googleLogin();return}document.querySelectorAll('.auth-modal').forEach(m=>m.classList.remove('open'));bioScreen.style.display='none';const shell=document.getElementById('internal-shell');if(shell)shell.classList.add('active');document.querySelectorAll('.internal-page').forEach(p=>p.classList.toggle('active',p.dataset.page==='home'));document.querySelectorAll('[data-page-target]').forEach(b=>b.classList.toggle('active',b.dataset.pageTarget==='home'));document.querySelectorAll('.internal-bg').forEach(el=>el.style.backgroundImage='url('+window.ACADEMY_BG+')');document.querySelectorAll('.internal-logo').forEach(el=>el.src=window.ACADEMY_LOGO);});
   document.getElementById('bio-enter').addEventListener('click',()=>{if(window.AndroidAuth&&AndroidAuth.biometricLogin)AndroidAuth.biometricLogin();});
-  document.getElementById('stackup-form').addEventListener('submit',e=>{e.preventDefault();const id=document.getElementById('stackup-id').value.trim(),pw=document.getElementById('stackup-password').value;if(window.AndroidAuth&&AndroidAuth.stackupLogin)AndroidAuth.stackupLogin(id,pw);});
-  window.authSuccess=function(action){document.querySelectorAll('.auth-modal').forEach(m=>m.classList.remove('open'));bioScreen.style.display='none';const pw=document.getElementById('stackup-password');if(pw)pw.value='';if(action==='logout')return;if(window.openAcademyHome)window.openAcademyHome();};
+  const SUPABASE_URL='https://mzlznwnxahixoqyspsdy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_E9cnM9HPU19f9hdFxzjXrg_FkD6clWQ';
+  const authHeaders={'apikey':SUPABASE_KEY,'Content-Type':'application/json'};
+  const authRequest=async(path,body)=>{const res=await fetch(SUPABASE_URL+path,{method:'POST',headers:authHeaders,body:JSON.stringify(body)});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.msg||data.message||data.error_description||'Não foi possível autenticar.');return data};
+  const saveSession=data=>{if(data&&data.access_token){sessionStorage.setItem('stackup.access_token',data.access_token);if(data.refresh_token)localStorage.setItem('stackup.refresh_token',data.refresh_token);if(data.user)localStorage.setItem('stackup.user',JSON.stringify({id:data.user.id,email:data.user.email}));}};
+  const restoreSession=async()=>{const refresh_token=localStorage.getItem('stackup.refresh_token');if(!refresh_token)return false;try{const data=await authRequest('/auth/v1/token?grant_type=refresh_token',{refresh_token});saveSession(data);return !!data.access_token}catch(_){sessionStorage.removeItem('stackup.access_token');localStorage.removeItem('stackup.refresh_token');localStorage.removeItem('stackup.user');return false}};
+  const consumeOAuthSession=()=>{const raw=(location.hash||'').replace(/^#/,'');if(!raw)return false;const p=new URLSearchParams(raw),access_token=p.get('access_token'),refresh_token=p.get('refresh_token');if(!access_token)return false;saveSession({access_token,refresh_token,user:null});history.replaceState(null,'',location.pathname+location.search);return true};
+  document.querySelector('[data-action="create-stackup"]').addEventListener('click',()=>openModal('stackup-create-modal'));
+  document.getElementById('stackup-form').addEventListener('submit',async e=>{e.preventDefault();const email=document.getElementById('stackup-id').value.trim().toLowerCase(),password=document.getElementById('stackup-password').value;if(window.AndroidAuth&&AndroidAuth.stackupLogin){AndroidAuth.stackupLogin(email,password);return}try{const data=await authRequest('/auth/v1/token?grant_type=password',{email,password});saveSession(data);window.authSuccess()}catch(err){window.authError(err.message)}});
+  document.getElementById('stackup-create-form').addEventListener('submit',async e=>{e.preventDefault();const name=document.getElementById('stackup-create-name').value.trim(),email=document.getElementById('stackup-create-email').value.trim().toLowerCase(),password=document.getElementById('stackup-create-password').value;try{const data=await authRequest('/auth/v1/signup',{email,password,data:{full_name:name,stackup_id:email}});if(data.access_token){saveSession(data);window.authSuccess()}else{closeModal('stackup-create-modal');window.authError('Conta criada. Confirme seu e-mail para entrar.')}}catch(err){window.authError(err.message)}});
+  let recoveryAccessToken='';
+  window.authRecovery=function(accessToken){recoveryAccessToken=accessToken||'';document.querySelectorAll('.auth-modal').forEach(m=>m.classList.remove('open'));openModal('stackup-recovery-modal')};
+  document.getElementById('stackup-recovery-form').addEventListener('submit',async e=>{e.preventDefault();const password=document.getElementById('stackup-recovery-password').value;if(!recoveryAccessToken){window.authError('Link de recuperação inválido ou expirado.');return}try{const r=await fetch(SUPABASE_URL+'/auth/v1/user',{method:'PUT',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+recoveryAccessToken,'Content-Type':'application/json'},body:JSON.stringify({password})});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.msg||data.message||data.error_description||'Não foi possível alterar a senha.');recoveryAccessToken='';closeModal('stackup-recovery-modal');window.authError('Senha alterada. Entre novamente com seu StackUp ID.')}catch(err){window.authError(err.message)}});
+  document.getElementById('stackup-forgot').addEventListener('click',async()=>{const email=document.getElementById('stackup-id').value.trim().toLowerCase();if(!email){window.authError('Informe seu e-mail StackUp ID.');return}try{const redirectTo=(window.AndroidAuth?'stackupexperiencia://auth/callback':location.origin+location.pathname);await authRequest('/auth/v1/recover?redirect_to='+encodeURIComponent(redirectTo),{email});window.authError('Enviamos as instruções de recuperação para seu e-mail.')}catch(err){window.authError(err.message)}});
+  window.authSuccess=function(){document.querySelectorAll('.auth-modal').forEach(m=>m.classList.remove('open'));bioScreen.style.display='none';if(window.openAcademyHome)window.openAcademyHome();};
   window.authError=function(message){const toast=document.getElementById('toast');toast.textContent=message||'Não foi possível autenticar.';toast.style.opacity='1';toast.style.transform='translateX(-50%) translateY(0)';setTimeout(()=>{toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(18px)'},2200);};
+  (async()=>{if(consumeOAuthSession()||await restoreSession()){window.authSuccess()}})();
 })();
 </script>
 
@@ -942,7 +977,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-ref]');if(
  const hd=e.target.closest('[data-history-delete]');if(hd){const p=progress();p.runs=p.runs.filter(r=>String(r.id)!==hd.dataset.historyDelete);saveProgress(p);renderHistory();return}
  const hr=e.target.closest('[data-history-restart]');if(hr){const p=progress(),rr=p.runs.find(x=>String(x.id)===hr.dataset.historyRestart),n=rr&&findNode(rr.section,rr.nodeId);if(n)startQuiz(rr.section,n);return}
  const ho=e.target.closest('[data-history-open]');if(ho){const p=progress(),rr=p.runs.find(x=>String(x.id)===ho.dataset.historyOpen),n=rr&&findNode(rr.section,rr.nodeId);if(rr&&n)startQuiz(rr.section,n,rr);return}
- if(e.target.closest('[data-exit]')){try{if(window.AndroidAuth&&AndroidAuth.logout)AndroidAuth.logout()}catch(_){} const shell=document.getElementById('internal-shell');if(shell)shell.classList.remove('active');document.querySelectorAll('.internal-page').forEach(pg=>pg.classList.toggle('active',pg.dataset.page==='home'));document.querySelectorAll('[data-page-target]').forEach(btn=>btn.classList.toggle('active',btn.dataset.pageTarget==='home'));state.trail={base:[],modalidades:[],pratica:[]};state.quiz=null;window.scrollTo(0,0);return}
+ if(e.target.closest('[data-exit]')){const shell=document.getElementById('internal-shell');if(shell)shell.classList.remove('active');document.querySelectorAll('.internal-page').forEach(pg=>pg.classList.toggle('active',pg.dataset.page==='home'));document.querySelectorAll('[data-page-target]').forEach(btn=>btn.classList.toggle('active',btn.dataset.pageTarget==='home'));state.trail={base:[],modalidades:[],pratica:[]};state.quiz=null;window.scrollTo(0,0);return}
  if(e.target.closest('[data-root-back]')){const p=e.target.closest('.internal-page')?.dataset.page;if(p==='home'){renderHome();return}if(p==='perfil'){renderProfile();return}if(roots[p]){const trail=state.trail[p]||[];if(trail.length>1){trail.pop();const parentId=trail.pop(),parent=findNode(p,parentId);if(parent){showNode(p,parent);return}}renderRoot(p);return}}
  if(e.target.closest('[data-section-prev]')){const p=e.target.closest('.internal-page')?.dataset.page,order=['home','base','modalidades','pratica','perfil'],i=order.indexOf(p),dest=order[Math.max(0,i-1)];if(dest==='home'){renderHome();goPage('home')}else if(dest==='perfil'){renderProfile();goPage('perfil')}else if(roots[dest]){renderRoot(dest);goPage(dest)}return}
  if(e.target.closest('[data-section-next]')){renderRoot('base');goPage('base');return}
