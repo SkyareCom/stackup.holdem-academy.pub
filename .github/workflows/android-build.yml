@@ -71,7 +71,7 @@ jobs:
           fi
 
       - name: Run Android release lint
-        run: gradle -p android :app:lintRelease --stacktrace
+        run: gradle -p new-academy :app:lintRelease --stacktrace
 
       - name: Build release AAB and production APK
         env:
@@ -79,11 +79,11 @@ jobs:
           STACKUP_UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
           STACKUP_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
           STACKUP_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
-        run: gradle -p android :app:bundleRelease :app:assembleRelease --stacktrace
+        run: gradle -p new-academy :app:bundleRelease :app:assembleRelease --stacktrace
 
       - name: Verify AAB integrity
         run: |
-          AAB="android/app/build/outputs/bundle/release/app-release.aab"
+          AAB="new-academy/app/build/outputs/bundle/release/app-release.aab"
           test -s "$AAB"
           unzip -t "$AAB"
           sha256sum "$AAB" | tee "${AAB}.sha256"
@@ -91,12 +91,12 @@ jobs:
       - name: Verify signed Play AAB
         if: ${{ env.STACKUP_SIGNING_READY == 'true' }}
         run: |
-          AAB="android/app/build/outputs/bundle/release/app-release.aab"
+          AAB="new-academy/app/build/outputs/bundle/release/app-release.aab"
           jarsigner -verify -verbose -certs "$AAB"
 
       - name: Record release signing status
         run: |
-          mkdir -p android/app/build/outputs/bundle/release
+          mkdir -p new-academy/app/build/outputs/bundle/release
           {
             echo "package=com.skyare.stackupacademy"
             echo "versionName=2.1.8"
@@ -106,12 +106,12 @@ jobs:
             echo "contentUrl=https://skyarecom.github.io/stackup.holdem-academy.pub/index.html"
             echo "fallback=bundled-assets"
             echo "signed=${STACKUP_SIGNING_READY}"
-          } > android/app/build/outputs/bundle/release/RELEASE-INFO.txt
+          } > new-academy/app/build/outputs/bundle/release/RELEASE-INFO.txt
 
       - name: Verify production APK uses native WebView launcher
         if: ${{ env.STACKUP_SIGNING_READY == 'true' }}
         run: |
-          APK="android/app/build/outputs/apk/release/app-release.apk"
+          APK="new-academy/app/build/outputs/apk/release/app-release.apk"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
           test -s "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-release-badging.txt
@@ -123,11 +123,11 @@ jobs:
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK"
 
       - name: Build installable debug APK
-        run: gradle -p android :app:assembleDebug --stacktrace
+        run: gradle -p new-academy :app:assembleDebug --stacktrace
 
       - name: Verify debug APK uses the same native launcher
         run: |
-          APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          APK="new-academy/app/build/outputs/apk/debug/app-debug.apk"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-debug-badging.txt
           grep -q "package: name='com.skyare.stackupacademy.test221'" /tmp/stackup-debug-badging.txt
@@ -138,8 +138,8 @@ jobs:
 
       - name: Verify bundled Academy web assets
         run: |
-          AAB="android/app/build/outputs/bundle/release/app-release.aab"
-          APK="android/app/build/outputs/apk/release/app-release.apk"
+          AAB="new-academy/app/build/outputs/bundle/release/app-release.aab"
+          APK="new-academy/app/build/outputs/apk/release/app-release.apk"
           unzip -l "$AAB" | grep -q "base/assets/index.html"
           unzip -l "$AAB" | grep -q "base/assets/auth-production.js"
           unzip -l "$AAB" | grep -q "base/assets/billing-production.js"
@@ -161,8 +161,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           script: |
-            test -s android/app/build/outputs/apk/release/app-release.apk
-            adb install -r android/app/build/outputs/apk/release/app-release.apk
+            test -s new-academy/app/build/outputs/apk/release/app-release.apk
+            adb install -r new-academy/app/build/outputs/apk/release/app-release.apk
             adb shell pm list packages | grep -q "^package:com.skyare.stackupacademy$"
 
             adb logcat -c
@@ -194,8 +194,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           script: |
-            test -s android/app/build/outputs/apk/release/app-release.apk
-            adb install -r android/app/build/outputs/apk/release/app-release.apk
+            test -s new-academy/app/build/outputs/apk/release/app-release.apk
+            adb install -r new-academy/app/build/outputs/apk/release/app-release.apk
             adb shell pm list packages | grep -q "^package:com.skyare.stackupacademy$"
 
             adb logcat -c
@@ -233,9 +233,9 @@ jobs:
         with:
           name: stackup-academy-play-aab
           path: |
-            android/app/build/outputs/bundle/release/*.aab
-            android/app/build/outputs/bundle/release/*.sha256
-            android/app/build/outputs/bundle/release/RELEASE-INFO.txt
+            new-academy/app/build/outputs/bundle/release/*.aab
+            new-academy/app/build/outputs/bundle/release/*.sha256
+            new-academy/app/build/outputs/bundle/release/RELEASE-INFO.txt
           if-no-files-found: error
 
       - name: Upload installable test APK
@@ -243,5 +243,5 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: stackup-academy-android-test-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: new-academy/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
