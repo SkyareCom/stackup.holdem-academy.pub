@@ -1,11 +1,11 @@
-name: Build Clean Academy Play AAB 228
+name: Build Clean Academy Play AAB 229
 
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/build-clean-academy-228.yml'
+      - '.github/workflows/build-clean-academy-229.yml'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: c6ebd66301fed51b1f3a6c4926b0280b3f984b20
+          ref: b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a
           path: source
           persist-credentials: false
 
@@ -40,8 +40,8 @@ jobs:
           test -s source/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
-          grep -q "versionCode 228" source/app/build.gradle
-          grep -q "versionName '2.1.12'" source/app/build.gradle
+          grep -q "versionCode 229" source/app/build.gradle
+          grep -q "versionName '2.1.13'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
 
@@ -72,8 +72,18 @@ jobs:
           printf '%s' "$ANDROID_UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/stackup-upload.jks"
           chmod 600 "$RUNNER_TEMP/stackup-upload.jks"
 
+      - name: Verify authentication build configuration
+        env:
+          STACKUP_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.STACKUP_SUPABASE_PUBLISHABLE_KEY }}
+        shell: bash
+        run: |
+          test -n "$STACKUP_SUPABASE_PUBLISHABLE_KEY"
+          grep -q "BuildConfig.SUPABASE_PUBLISHABLE_KEY" source/app/src/main/java/com/skyare/stackupacademy/AuthConfig.java
+          grep -q "stackupacademy://auth/callback" source/app/src/main/java/com/skyare/stackupacademy/AuthConfig.java
+
       - name: Build signed release AAB and APK
         env:
+          STACKUP_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.STACKUP_SUPABASE_PUBLISHABLE_KEY }}
           STACKUP_UPLOAD_KEYSTORE: ${{ runner.temp }}/stackup-upload.jks
           STACKUP_UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
           STACKUP_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
@@ -90,11 +100,11 @@ jobs:
           test -s "$APK"
           unzip -t "$AAB"
           jarsigner -verify -verbose -certs "$AAB"
-          "$AAPT" dump badging "$APK" | tee /tmp/academy-228-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-228-badging.txt
-          grep -q "versionCode='228'" /tmp/academy-228-badging.txt
-          grep -q "versionName='2.1.12'" /tmp/academy-228-badging.txt
-          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-228-badging.txt
+          "$AAPT" dump badging "$APK" | tee /tmp/academy-229-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-229-badging.txt
+          grep -q "versionCode='229'" /tmp/academy-229-badging.txt
+          grep -q "versionName='2.1.13'" /tmp/academy-229-badging.txt
+          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-229-badging.txt
 
       - name: Verify AAB contains exact approved bundled front
         shell: bash
@@ -102,6 +112,9 @@ jobs:
           AAB="source/app/build/outputs/bundle/release/app-release.aab"
           unzip -p "$AAB" base/assets/index.html > /tmp/aab-index.html
           cmp -s /tmp/aab-index.html source/app/src/main/assets/index.html
+          cmp -s source/index.html source/app/src/main/assets/index.html
+          test "$(unzip -l "$AAB" | awk '$4=="base/assets/index.html"{n++} END{print n+0}')" -eq 1
+          ! grep -Eiq 'github\.io|raw\.githubusercontent\.com|pages\.dev' /tmp/aab-index.html
           unzip -l "$AAB" | grep -q "base/assets/academy-content.js"
           unzip -l "$AAB" | grep -q "base/assets/assets/bg.js"
           unzip -l "$AAB" | grep -q "base/assets/assets/logo.js"
@@ -113,11 +126,11 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=c6ebd66301fed51b1f3a6c4926b0280b3f984b20"
+            echo "source_commit=b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.12"
-            echo "versionCode=228"
+            echo "versionName=2.1.13"
+            echo "versionCode=229"
             echo "front=bundled-local-only"
             echo "remote_front=false"
           } > "$OUT/RELEASE-INFO.txt"
@@ -125,7 +138,7 @@ jobs:
       - name: Upload clean Play AAB
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: stackup-academy-play-228-clean
+          name: stackup-academy-play-229-clean
           path: |
             source/app/build/outputs/bundle/release/app-release.aab
             source/app/build/outputs/bundle/release/app-release.aab.sha256

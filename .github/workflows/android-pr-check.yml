@@ -2,12 +2,10 @@ name: Android PR Check
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - 'new-academy/**'
       - '.github/workflows/android-pr-check.yml'
-      - '.github/workflows/android-build.yml'
+      - '.github/workflows/build-clean-academy-229.yml'
       - 'scripts/security-guard.js'
 
 permissions:
@@ -19,44 +17,57 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Checkout publisher
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           persist-credentials: false
-
-      - name: Security repository guard
-        run: node scripts/security-guard.js
-
+      - name: Checkout Academy single source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: SkyareCom/stackup.holdem-academy.experiencia
+          ref: b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a
+          path: source
+          persist-credentials: false
+      - name: Verify publication boundary
+        shell: bash
+        run: |
+          test ! -e new-academy
+          test ! -e index.html
+          test ! -e sw.js
+          test ! -e manifest.webmanifest
+          test -s source/index.html
+          test -s source/app/src/main/assets/index.html
+          cmp -s source/index.html source/app/src/main/assets/index.html
+          grep -q "versionCode 229" source/app/build.gradle
+          grep -q "versionName '2.1.13'" source/app/build.gradle
+          grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
+          grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
+          ! grep -R -Eiq 'stackup\.holdem-academy([^.]|$)' .github/workflows
       - name: Set up Java 17
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
         with:
           distribution: temurin
           java-version: '17'
-
       - name: Set up Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407
         with:
           packages: platform-tools
-
       - name: Install Android 36 SDK
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
-
-      - name: Set up Gradle 9.6
-        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
+      - name: Set up Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a
         with:
-          gradle-version: '9.6.0'
-
-      - name: Lint release
-        run: gradle -p new-academy :app:lintRelease --stacktrace
-
-      - name: Build debug APK
-        run: gradle -p new-academy :app:assembleDebug --stacktrace
-
+          gradle-version: '8.11.1'
+      - name: Build debug APK from single source
+        env:
+          STACKUP_SUPABASE_PUBLISHABLE_KEY: test_publishable_key_for_compile_only
+        run: gradle -p source :app:assembleDebug --stacktrace
       - name: Verify debug package and launcher
         run: |
-          APK="new-academy/app/build/outputs/apk/debug/app-debug.apk"
+          APK="source/app/build/outputs/apk/debug/app-debug.apk"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
           test -s "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-pr-badging.txt
           grep -q "package: name='com.skyare.stackupacademy'" /tmp/stackup-pr-badging.txt
+          grep -q "versionCode='229'" /tmp/stackup-pr-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/stackup-pr-badging.txt
