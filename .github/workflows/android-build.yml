@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - academy-publish-221-stackup-auth
     paths:
       - 'android/**'
       - '.github/workflows/android-build.yml'
@@ -98,8 +99,8 @@ jobs:
           mkdir -p android/app/build/outputs/bundle/release
           {
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.7"
-            echo "versionCode=220"
+            echo "versionName=2.1.8"
+            echo "versionCode=221"
             echo "targetSdk=36"
             echo "shell=webview-remote-first"
             echo "contentUrl=https://skyarecom.github.io/stackup.holdem-academy.pub/index.html"
@@ -129,7 +130,7 @@ jobs:
           APK="android/app/build/outputs/apk/debug/app-debug.apk"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-debug-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy.test220'" /tmp/stackup-debug-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy.test221'" /tmp/stackup-debug-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/stackup-debug-badging.txt
           "$AAPT" dump xmltree "$APK" AndroidManifest.xml | tee /tmp/stackup-debug-manifest.txt
           ! grep -q "com.google.androidbrowserhelper.trusted" /tmp/stackup-debug-manifest.txt
