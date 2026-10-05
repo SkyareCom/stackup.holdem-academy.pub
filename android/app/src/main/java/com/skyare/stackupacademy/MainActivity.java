@@ -59,13 +59,13 @@ public class MainActivity extends FragmentActivity {
     private static final String TAG = "StackUpAcademy";
     private static final String PREFS = "stackup_android_shell";
     private static final String CACHE_SCHEMA_KEY = "cache_schema";
-    private static final int CACHE_SCHEMA = 220;
+    private static final int CACHE_SCHEMA = 221;
     private static final String APP_ENTRY_URL =
-            APP_URL + "index.html?android_build=220&source=remote";
+            APP_URL + "index.html?android_build=221&source=remote";
     private static final String RECOVERY_URL =
-            APP_URL + "index.html?android_build=220&cache_reset=1";
+            APP_URL + "index.html?android_build=221&cache_reset=1";
     private static final String LOCAL_ENTRY_URL =
-            LOCAL_ASSET_URL + "index.html?android_build=220&source=local";
+            LOCAL_ASSET_URL + "index.html?android_build=221&source=local";
 
     private WebView webView;
     private FrameLayout root;
@@ -97,7 +97,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         try {
-            Log.i(TAG, "SHELL_CREATE version=220");
+            Log.i(TAG, "SHELL_CREATE version=221");
             createAndLoadWebView(savedInstanceState);
         } catch (Throwable error) {
             Log.e(TAG, "SHELL_CREATE_FAILED", error);
@@ -322,14 +322,14 @@ public class MainActivity extends FragmentActivity {
                             "(function(){if(document.getElementById('stackup-auth-production'))return;" +
                             "var s=document.createElement('script');" +
                             "s.id='stackup-auth-production';" +
-                            "s.src='" + scriptBase + "auth-production.js?v=220';" +
+                            "s.src='" + scriptBase + "auth-production.js?v=221';" +
                             "document.head.appendChild(s);})();";
                     view.evaluateJavascript(authLoader, null);
                     String billingLoader =
                             "(function(){if(document.getElementById('stackup-billing-production'))return;" +
                             "var s=document.createElement('script');" +
                             "s.id='stackup-billing-production';" +
-                            "s.src='" + scriptBase + "billing-production.js?v=220';" +
+                            "s.src='" + scriptBase + "billing-production.js?v=221';" +
                             "document.head.appendChild(s);})();";
                     view.evaluateJavascript(billingLoader, null);
                 }

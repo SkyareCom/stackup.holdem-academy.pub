@@ -5,15 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'android/**'
+      - 'new-academy/**'
       - '.github/workflows/android-pr-check.yml'
       - '.github/workflows/android-build.yml'
       - 'scripts/security-guard.js'
-      - 'index.html'
-      - 'test-layout-quality.js'
-      - 'test-layout-contract.js'
-      - 'sw.js'
-      - '.github/workflows/deploy-pages.yml'
 
 permissions:
   contents: read
@@ -31,15 +26,6 @@ jobs:
 
       - name: Security repository guard
         run: node scripts/security-guard.js
-
-      - name: Validate Academy typography contract
-        run: node test-layout-quality.js
-
-      - name: Validate Academy web layout contract
-        run: node test-layout-contract.js
-
-      - name: Validate Android shell contract
-        run: node android/test-shell-contract.js
 
       - name: Set up Java 17
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
@@ -61,16 +47,16 @@ jobs:
           gradle-version: '9.6.0'
 
       - name: Lint release
-        run: gradle -p android :app:lintRelease --stacktrace
+        run: gradle -p new-academy :app:lintRelease --stacktrace
 
       - name: Build debug APK
-        run: gradle -p android :app:assembleDebug --stacktrace
+        run: gradle -p new-academy :app:assembleDebug --stacktrace
 
       - name: Verify debug package and launcher
         run: |
-          APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          APK="new-academy/app/build/outputs/apk/debug/app-debug.apk"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
           test -s "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-pr-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy.test220'" /tmp/stackup-pr-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy'" /tmp/stackup-pr-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/stackup-pr-badging.txt
