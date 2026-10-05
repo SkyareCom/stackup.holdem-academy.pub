@@ -102,7 +102,7 @@ jobs:
           VERSION_NAME="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionName='\\([^']*\\)'.*/\\1/p")"
           VERSION_CODE="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionCode='\\([^']*\\)'.*/\\1/p")"
           test "$VERSION_NAME" = "2.1.9"
-          test "$VERSION_CODE" = "224"
+          test "$VERSION_CODE" = "225"
           {
             echo "package=com.skyare.stackupacademy"
             echo "versionName=$VERSION_NAME"
@@ -122,6 +122,7 @@ jobs:
           test -s "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-release-badging.txt
           grep -q "package: name='com.skyare.stackupacademy'" /tmp/stackup-release-badging.txt
+          grep -q "com.android.vending.BILLING" /tmp/stackup-release-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/stackup-release-badging.txt
           "$AAPT" dump xmltree "$APK" AndroidManifest.xml | tee /tmp/stackup-release-manifest.txt
           ! grep -q "com.google.androidbrowserhelper.trusted" /tmp/stackup-release-manifest.txt
