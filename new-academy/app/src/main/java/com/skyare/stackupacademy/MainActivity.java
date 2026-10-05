@@ -24,7 +24,6 @@ import java.util.concurrent.Executor;
 
 public class MainActivity extends FragmentActivity {
     private WebView webView;
-    private static final String REMOTE_APP_URL = "https://skyarecom.github.io/stackup.holdem-academy.pub/";
     private static final String LOCAL_APP_URL = "file:///android_asset/index.html";
     private static final String SUPABASE_URL = "https://mzlznwnxahixoqyspsdy.supabase.co";
     private static final String SUPABASE_KEY = "sb_publishable_E9cnM9HPU19f9hdFxzjXrg_FkD6clWQ";
@@ -63,7 +62,7 @@ public class MainActivity extends FragmentActivity {
                 return true;
             }
         });
-        webView.loadUrl(REMOTE_APP_URL + "?native=223&ts=" + System.currentTimeMillis());
+        webView.loadUrl(LOCAL_APP_URL);
         if (android.os.Build.VERSION.SDK_INT >= 33) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT,
@@ -75,7 +74,7 @@ public class MainActivity extends FragmentActivity {
     private boolean isTrustedAppUri(Uri uri) {
         if (uri == null) return false;
         if ("file".equals(uri.getScheme()) && "/android_asset/index.html".equals(uri.getPath())) return true;
-        return "https".equals(uri.getScheme()) && "skyarecom.github.io".equalsIgnoreCase(uri.getHost()) && uri.getPath() != null && uri.getPath().startsWith("/stackup.holdem-academy.pub/");
+        return false;
     }
 
     private void loadLocalFallback() {
