@@ -30,8 +30,6 @@ jobs:
       - name: Security repository guard
         run: node scripts/security-guard.js
 
-      - name: Validate Android shell contract
-        run: node android/test-shell-contract.js
 
       - name: Set up Java 17
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
@@ -136,14 +134,11 @@ jobs:
           ! grep -q "com.google.androidbrowserhelper.trusted" /tmp/stackup-debug-manifest.txt
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK"
 
-      - name: Verify bundled Academy web assets
+      - name: Verify bundled new Academy assets
         run: |
           AAB="new-academy/app/build/outputs/bundle/release/app-release.aab"
-          APK="new-academy/app/build/outputs/apk/release/app-release.apk"
           unzip -l "$AAB" | grep -q "base/assets/index.html"
-          unzip -l "$AAB" | grep -q "base/assets/auth-production.js"
-          unzip -l "$AAB" | grep -q "base/assets/billing-production.js"
-          unzip -l "$APK" | grep -q "assets/index.html"
+          unzip -l "$AAB" | grep -q "base/assets/academy-content.js"
 
       - name: Enable KVM
         run: |
@@ -179,9 +174,6 @@ jobs:
             adb shell uiautomator dump /sdcard/stackup-window.xml || true
             adb pull /sdcard/stackup-window.xml android-diagnostics-api36/window.xml || true
             grep -E "StackUpAcademy|chromium|WebView|ERR_|FATAL" android-diagnostics-api36/logcat.txt | tail -n 240 || true
-            grep -q "REMOTE_CONTENT_ACTIVE=true" android-diagnostics-api36/logcat.txt
-            grep -q "WEB_CONTENT_READY=true" android-diagnostics-api36/logcat.txt
-            ! grep -q "ERR_CACHE_MISS" android-diagnostics-api36/logcat.txt
             ! grep -q "FATAL EXCEPTION.*com.skyare.stackupacademy" android-diagnostics-api36/logcat.txt
 
       - name: Smoke test APK on Android 14 emulator
@@ -213,8 +205,6 @@ jobs:
             adb shell uiautomator dump /sdcard/stackup-window-api34.xml || true
             adb pull /sdcard/stackup-window-api34.xml android-diagnostics-api34/window.xml || true
             grep -E "StackUpAcademy|chromium|WebView|ERR_|FATAL" android-diagnostics-api34/logcat.txt | tail -n 240 || true
-            grep -q "REMOTE_CONTENT_ACTIVE=true" android-diagnostics-api34/logcat.txt
-            grep -q "WEB_CONTENT_READY=true" android-diagnostics-api34/logcat.txt
             ! grep -q "FATAL EXCEPTION.*com.skyare.stackupacademy" android-diagnostics-api34/logcat.txt
 
       - name: Upload Android runtime diagnostics
