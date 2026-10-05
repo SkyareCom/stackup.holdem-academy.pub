@@ -1,9 +1,0 @@
-<resources>
-    <style name="Theme.StackUp" parent="android:style/Theme.Material.NoActionBar">
-        <item name="android:fontFamily">sans</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <item name="android:navigationBarColor">#050807</item>
-        <item name="android:statusBarColor">#050807</item>
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-</resources>
