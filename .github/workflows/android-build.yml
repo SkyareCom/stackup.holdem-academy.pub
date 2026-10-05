@@ -93,16 +93,23 @@ jobs:
           AAB="new-academy/app/build/outputs/bundle/release/app-release.aab"
           jarsigner -verify -verbose -certs "$AAB"
 
-      - name: Record release signing status
+      - name: Record and verify release metadata
         run: |
           mkdir -p new-academy/app/build/outputs/bundle/release
+          APK="new-academy/app/build/outputs/apk/release/app-release.apk"
+          AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt"
+          BADGING="$($AAPT dump badging "$APK" | head -n 1)"
+          VERSION_NAME="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionName='\\([^']*\\)'.*/\\1/p")"
+          VERSION_CODE="$(printf '%s\n' "$BADGING" | sed -n "s/.*versionCode='\\([^']*\\)'.*/\\1/p")"
+          test "$VERSION_NAME" = "2.1.9"
+          test "$VERSION_CODE" = "223"
           {
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.8"
-            echo "versionCode=221"
+            echo "versionName=$VERSION_NAME"
+            echo "versionCode=$VERSION_CODE"
             echo "targetSdk=36"
             echo "shell=webview-remote-first"
-            echo "contentUrl=https://skyarecom.github.io/stackup.holdem-academy.pub/index.html"
+            echo "contentUrl=https://skyarecom.github.io/stackup.holdem-academy.pub/"
             echo "fallback=bundled-assets"
             echo "signed=${STACKUP_SIGNING_READY}"
           } > new-academy/app/build/outputs/bundle/release/RELEASE-INFO.txt
