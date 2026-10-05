@@ -35,12 +35,12 @@
     };
   }
 
-  async function request(path, body) {
+  async function request(path, body, options) {
     if (!configured()) throw new Error("Supabase ainda não foi configurado neste build.");
     const { url } = config();
     const response = await fetch(url + "/auth/v1" + path, {
-      method: "POST",
-      headers: headers(),
+      method: (options && options.method) || "POST",
+      headers: Object.assign({}, headers(), (options && options.headers) || {}),
       body: JSON.stringify(body || {})
     });
     let data = {};
@@ -240,8 +240,44 @@
   }
 
   async function recoverStackId(email) {
-    await request("/recover", { email });
+    const redirectTo = "https://skyarecom.github.io/stackup.holdem-academy.pub/";
+    await request("/recover?redirect_to=" + encodeURIComponent(redirectTo), { email });
     say("Enviamos as instruções de recuperação para o seu e-mail.");
+  }
+
+  function recoveryTokenFromUrl() {
+    const hash = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+    return hash.get("type") === "recovery" ? (hash.get("access_token") || "") : "";
+  }
+
+  async function completePasswordRecovery(accessToken, password) {
+    if (!accessToken) throw new Error("Link de recuperação inválido ou expirado.");
+    if (String(password || "").length < 6) throw new Error("Use pelo menos 6 caracteres.");
+    const { url, anonKey } = config();
+    const response = await fetch(url + "/auth/v1/user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": anonKey,
+        "Authorization": "Bearer " + accessToken
+      },
+      body: JSON.stringify({ password })
+    });
+    let data = {};
+    try { data = await response.json(); } catch (_) {}
+    if (!response.ok) throw new Error(data.msg || data.message || "Não foi possível alterar a senha.");
+    history.replaceState(null, "", location.pathname + location.search);
+    return data;
+  }
+
+  function offerPasswordRecovery() {
+    const token = recoveryTokenFromUrl();
+    if (!token) return;
+    const password = window.prompt("NOVA SENHA STACKUP ID\n\nDigite uma nova senha com pelo menos 6 caracteres:");
+    if (password == null) return;
+    completePasswordRecovery(token, password)
+      .then(() => say("Senha alterada. Entre novamente com seu StackUp ID."))
+      .catch((error) => say(error.message || "Não foi possível alterar a senha."));
   }
 
   function enableProductionEntry() {
@@ -347,6 +383,7 @@
   }, true);
 
   enableProductionEntry();
+  offerPasswordRecovery();
 
   const bioBtn = q("#bioBtn");
   if (bioBtn) {
