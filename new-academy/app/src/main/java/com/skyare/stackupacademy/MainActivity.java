@@ -24,6 +24,8 @@ import java.util.concurrent.Executor;
 
 public class MainActivity extends FragmentActivity {
     private WebView webView;
+    private static final String REMOTE_APP_URL = "https://skyarecom.github.io/stackup.holdem-academy.pub/";
+    private static final String LOCAL_APP_URL = "file:///android_asset/index.html";
     private static final String SUPABASE_URL = "https://mzlznwnxahixoqyspsdy.supabase.co";
     private static final String SUPABASE_KEY = "sb_publishable_E9cnM9HPU19f9hdFxzjXrg_FkD6clWQ";
 
@@ -37,32 +39,47 @@ public class MainActivity extends FragmentActivity {
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        s.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(new AndroidAuth(), "AndroidAuth");
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, android.webkit.WebResourceRequest request) {
                 Uri uri=request.getUrl();
-                if ("file".equals(uri.getScheme()) && "/android_asset/index.html".equals(uri.getPath())) return false;
+                if (isTrustedAppUri(uri)) return false;
                 try { startActivity(new Intent(Intent.ACTION_VIEW, uri)); } catch(Exception ignored) {}
                 return true;
             }
+            @Override public void onReceivedError(WebView view, android.webkit.WebResourceRequest request, android.webkit.WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (request.isForMainFrame() && request.getUrl() != null && "https".equals(request.getUrl().getScheme())) loadLocalFallback();
+            }
             @Override public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view,url);
-                if ("file:///android_asset/index.html".equals(url)) restoreSession();
+                if (isTrustedAppUri(Uri.parse(url))) restoreSession();
             }
             @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Uri uri=Uri.parse(url);
-                if ("file".equals(uri.getScheme()) && "/android_asset/index.html".equals(uri.getPath())) return false;
+                if (isTrustedAppUri(uri)) return false;
                 try { startActivity(new Intent(Intent.ACTION_VIEW, uri)); } catch(Exception ignored) {}
                 return true;
             }
         });
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl(REMOTE_APP_URL + "?native=223&ts=" + System.currentTimeMillis());
         if (android.os.Build.VERSION.SDK_INT >= 33) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT,
                 () -> { if (webView.canGoBack()) webView.goBack(); else finish(); }
             );
         }
+    }
+
+    private boolean isTrustedAppUri(Uri uri) {
+        if (uri == null) return false;
+        if ("file".equals(uri.getScheme()) && "/android_asset/index.html".equals(uri.getPath())) return true;
+        return "https".equals(uri.getScheme()) && "skyarecom.github.io".equalsIgnoreCase(uri.getHost()) && uri.getPath() != null && uri.getPath().startsWith("/stackup.holdem-academy.pub/");
+    }
+
+    private void loadLocalFallback() {
+        runOnUiThread(() -> { if (!LOCAL_APP_URL.equals(webView.getUrl())) webView.loadUrl(LOCAL_APP_URL); });
     }
 
     private void js(String function, String value) {
