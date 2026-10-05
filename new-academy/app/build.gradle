@@ -14,7 +14,7 @@ android {
         applicationId 'com.skyare.stackupacademy'
         minSdk 24
         targetSdk 36
-        versionCode 223
+        versionCode 224
         versionName '2.1.9'
     }
 
