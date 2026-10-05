@@ -168,7 +168,8 @@ jobs:
             grep -q "Status: ok" /tmp/stackup-start.txt
             grep -q "MainActivity" /tmp/stackup-start.txt
             mkdir -p android-diagnostics-api36
-            for i in $(seq 1 18); do sleep 5; adb logcat -d -v time > android-diagnostics-api36/logcat.txt; grep -q "WEB_CONTENT_READY=true" android-diagnostics-api36/logcat.txt && break; done
+            sleep 10
+            adb shell pidof com.skyare.stackupacademy
             adb logcat -d -v time > android-diagnostics-api36/logcat.txt
             cp /tmp/stackup-start.txt android-diagnostics-api36/start.txt
             adb exec-out screencap -p > android-diagnostics-api36/screen.png
@@ -199,7 +200,8 @@ jobs:
             grep -q "MainActivity" /tmp/stackup-start-api34.txt
 
             mkdir -p android-diagnostics-api34
-            for i in $(seq 1 18); do sleep 5; adb logcat -d -v time > android-diagnostics-api34/logcat.txt; grep -q "WEB_CONTENT_READY=true" android-diagnostics-api34/logcat.txt && break; done
+            sleep 10
+            adb shell pidof com.skyare.stackupacademy
             adb logcat -d -v time > android-diagnostics-api34/logcat.txt
             cp /tmp/stackup-start-api34.txt android-diagnostics-api34/start.txt
             adb exec-out screencap -p > android-diagnostics-api34/screen.png
