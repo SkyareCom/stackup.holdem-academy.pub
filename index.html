@@ -1843,6 +1843,16 @@ a.qb.pflink{display:flex;align-items:center;justify-content:center;text-decorati
 #app #splash .spcore .logo{animation:none!important;transform:none!important;rotate:0deg!important;opacity:1!important}
 #app #splash .spname{animation:none!important;opacity:1!important;transform:rotate(-5deg)!important}
 
+
+/* PRACTICE GRID RESIDUAL CONTAINER FIX — 2026-10-04 */
+#app #home #view:has(.practice-four),#app #home #view:has(.practice-four)>*,#app #home #view:has(.practice-four)>.tower,#app #home .tower.scroll.practice-four{background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-bottom:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}
+#app #home #view:has(.practice-four)::before,#app #home #view:has(.practice-four)::after,#app #home #view:has(.practice-four)>*::before,#app #home #view:has(.practice-four)>*::after,#app #home .tower.scroll.practice-four::before,#app #home .tower.scroll.practice-four::after{content:none!important;display:none!important;border:0!important;background:none!important;box-shadow:none!important}
+#app #home #view:has(.practice-four){overflow:hidden!important;padding-bottom:12px!important}
+#app #home .tower.scroll.practice-four{overflow:hidden!important;padding:0 0 12px!important;height:calc(100% - 12px)!important;box-sizing:border-box!important}
+#app #home .tower.scroll.practice-four>.tile.tcard{background-clip:padding-box!important;margin:0!important}
+#app #home .tower.scroll.practice-four>.tile.tcard .htx{grid-template-rows:30px 32px!important;height:66px!important;min-height:66px!important;max-height:66px!important;margin:0!important;align-items:start!important}
+#app #home .tower.scroll.practice-four>.tile.tcard .htx b,#app #home .tower.scroll.practice-four>.tile.tcard[data-open="hist"] .htx b{height:30px!important;min-height:30px!important;max-height:30px!important;margin:0!important;padding:0!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;line-height:1.15!important}
+#app #home .tower.scroll.practice-four>.tile.tcard .htx small{height:32px!important;min-height:32px!important;max-height:32px!important;margin:0!important;padding:0!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;line-height:1.2!important}
 </style>
 </head>
 <body>
