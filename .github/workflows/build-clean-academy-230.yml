@@ -127,11 +127,11 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=9e1752e4a7ab5dc7f5076065ba5275c3fcd48c4d"
+            echo "source_commit=f64193c75e28db2222ecae042bae930bdf740b0d"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.14"
-            echo "versionCode=230"
+            echo "versionName=2.1.15"
+            echo "versionCode=231"
             echo "front=bundled-local-only"
             echo "remote_front=false"
           } > "$OUT/RELEASE-INFO.txt"
@@ -139,7 +139,7 @@ jobs:
       - name: Upload clean Play AAB
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: stackup-academy-play-230-clean
+          name: stackup-academy-play-231-clean
           path: |
             source/app/build/outputs/bundle/release/app-release.aab
             source/app/build/outputs/bundle/release/app-release.aab.sha256
