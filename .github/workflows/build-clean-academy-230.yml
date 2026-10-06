@@ -41,7 +41,7 @@ jobs:
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
           grep -q "versionCode 232" source/app/build.gradle
-          grep -q "versionName '2.1.15'" source/app/build.gradle
+          grep -q "versionName '2.1.16'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
 
