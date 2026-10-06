@@ -131,7 +131,7 @@ jobs:
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
             echo "versionName=2.1.16"
-            echo "versionCode=231"
+            echo "versionCode=232"
             echo "front=bundled-local-only"
             echo "remote_front=false"
           } > "$OUT/RELEASE-INFO.txt"
