@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/android-pr-check.yml'
-      - '.github/workflows/build-clean-academy-229.yml'
+      - '.github/workflows/build-clean-academy-230.yml'
       - 'scripts/security-guard.js'
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a
+          ref: 9e1752e4a7ab5dc7f5076065ba5275c3fcd48c4d
           path: source
           persist-credentials: false
       - name: Verify publication boundary
@@ -38,8 +38,8 @@ jobs:
           test -s source/index.html
           test -s source/app/src/main/assets/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
-          grep -q "versionCode 229" source/app/build.gradle
-          grep -q "versionName '2.1.13'" source/app/build.gradle
+          grep -q "versionCode 230" source/app/build.gradle
+          grep -q "versionName '2.1.14'" source/app/build.gradle
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -R -Eiq 'stackup\.holdem-academy([^.]|$)' .github/workflows
@@ -69,5 +69,5 @@ jobs:
           test -s "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/stackup-pr-badging.txt
           grep -q "package: name='com.skyare.stackupacademy'" /tmp/stackup-pr-badging.txt
-          grep -q "versionCode='229'" /tmp/stackup-pr-badging.txt
+          grep -q "versionCode='230'" /tmp/stackup-pr-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/stackup-pr-badging.txt
