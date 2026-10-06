@@ -1,11 +1,11 @@
-name: Build Clean Academy Play AAB 229
+name: Build Clean Academy Play AAB 230
 
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/build-clean-academy-229.yml'
+      - '.github/workflows/build-clean-academy-230.yml'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a
+          ref: 9e1752e4a7ab5dc7f5076065ba5275c3fcd48c4d
           path: source
           persist-credentials: false
 
@@ -40,8 +40,8 @@ jobs:
           test -s source/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
-          grep -q "versionCode 229" source/app/build.gradle
-          grep -q "versionName '2.1.13'" source/app/build.gradle
+          grep -q "versionCode 230" source/app/build.gradle
+          grep -q "versionName '2.1.14'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
 
@@ -101,11 +101,11 @@ jobs:
           test -s "$APK"
           unzip -t "$AAB"
           jarsigner -verify -verbose -certs "$AAB"
-          "$AAPT" dump badging "$APK" | tee /tmp/academy-229-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-229-badging.txt
-          grep -q "versionCode='229'" /tmp/academy-229-badging.txt
-          grep -q "versionName='2.1.13'" /tmp/academy-229-badging.txt
-          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-229-badging.txt
+          "$AAPT" dump badging "$APK" | tee /tmp/academy-230-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-230-badging.txt
+          grep -q "versionCode='230'" /tmp/academy-230-badging.txt
+          grep -q "versionName='2.1.14'" /tmp/academy-230-badging.txt
+          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-230-badging.txt
 
       - name: Verify AAB contains exact approved bundled front
         shell: bash
@@ -127,11 +127,11 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=b88dcdd4b5c0dc5f78f8b01ea412eb2bb9cc068a"
+            echo "source_commit=9e1752e4a7ab5dc7f5076065ba5275c3fcd48c4d"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.13"
-            echo "versionCode=229"
+            echo "versionName=2.1.14"
+            echo "versionCode=230"
             echo "front=bundled-local-only"
             echo "remote_front=false"
           } > "$OUT/RELEASE-INFO.txt"
@@ -139,7 +139,7 @@ jobs:
       - name: Upload clean Play AAB
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: stackup-academy-play-229-clean
+          name: stackup-academy-play-230-clean
           path: |
             source/app/build/outputs/bundle/release/app-release.aab
             source/app/build/outputs/bundle/release/app-release.aab.sha256
