@@ -1,4 +1,4 @@
-name: Build Clean Academy Play AAB 231
+name: Build Clean Academy Play AAB 232
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: f64193c75e28db2222ecae042bae930bdf740b0d
+          ref: 277853c7acd1f2d6c0d117b8ea234d2d999be206
           path: source
           persist-credentials: false
 
@@ -40,7 +40,7 @@ jobs:
           test -s source/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
-          grep -q "versionCode 231" source/app/build.gradle
+          grep -q "versionCode 232" source/app/build.gradle
           grep -q "versionName '2.1.15'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
@@ -127,10 +127,10 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=f64193c75e28db2222ecae042bae930bdf740b0d"
+            echo "source_commit=277853c7acd1f2d6c0d117b8ea234d2d999be206"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.15"
+            echo "versionName=2.1.16"
             echo "versionCode=231"
             echo "front=bundled-local-only"
             echo "remote_front=false"
@@ -139,7 +139,7 @@ jobs:
       - name: Upload clean Play AAB
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: stackup-academy-play-231-clean
+          name: stackup-academy-play-232-clean
           path: |
             source/app/build/outputs/bundle/release/app-release.aab
             source/app/build/outputs/bundle/release/app-release.aab.sha256
