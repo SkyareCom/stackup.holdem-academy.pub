@@ -103,8 +103,8 @@ jobs:
           jarsigner -verify -verbose -certs "$AAB"
           "$AAPT" dump badging "$APK" | tee /tmp/academy-231-badging.txt
           grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-231-badging.txt
-          grep -q "versionCode='230'" /tmp/academy-231-badging.txt
-          grep -q "versionName='2.1.14'" /tmp/academy-231-badging.txt
+          grep -q "versionCode='231'" /tmp/academy-231-badging.txt
+          grep -q "versionName='2.1.15'" /tmp/academy-231-badging.txt
           grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-231-badging.txt
 
       - name: Verify AAB contains exact approved bundled front
