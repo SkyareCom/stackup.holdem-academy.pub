@@ -1,4 +1,4 @@
-name: Build Clean Academy Play AAB 230
+name: Build Clean Academy Play AAB 231
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: 9e1752e4a7ab5dc7f5076065ba5275c3fcd48c4d
+          ref: f1b8a118c41f2f964b3ce91b9d7d3a212dd3810c
           path: source
           persist-credentials: false
 
@@ -40,8 +40,8 @@ jobs:
           test -s source/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
-          grep -q "versionCode 230" source/app/build.gradle
-          grep -q "versionName '2.1.14'" source/app/build.gradle
+          grep -q "versionCode 231" source/app/build.gradle
+          grep -q "versionName '2.1.15'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
 
@@ -101,11 +101,11 @@ jobs:
           test -s "$APK"
           unzip -t "$AAB"
           jarsigner -verify -verbose -certs "$AAB"
-          "$AAPT" dump badging "$APK" | tee /tmp/academy-230-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-230-badging.txt
-          grep -q "versionCode='230'" /tmp/academy-230-badging.txt
-          grep -q "versionName='2.1.14'" /tmp/academy-230-badging.txt
-          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-230-badging.txt
+          "$AAPT" dump badging "$APK" | tee /tmp/academy-231-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-231-badging.txt
+          grep -q "versionCode='231'" /tmp/academy-231-badging.txt
+          grep -q "versionName='2.1.15'" /tmp/academy-231-badging.txt
+          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-231-badging.txt
 
       - name: Verify AAB contains exact approved bundled front
         shell: bash
