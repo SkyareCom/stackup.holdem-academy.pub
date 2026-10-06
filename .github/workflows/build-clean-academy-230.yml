@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: a16455a67682534e59eb5a14c2be212a36f8162e
+          ref: f1b8a118c41f2f964b3ce91b9d7d3a212dd3810c
           path: source
           persist-credentials: false
 
