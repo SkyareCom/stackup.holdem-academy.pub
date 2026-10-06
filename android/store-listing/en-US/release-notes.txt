@@ -1,6 +1,0 @@
-Version 2.1.5
-• New Saira Semi Condensed typography across the internal app
-• Standardized card and title alignment
-• Card descriptions limited to two lines
-• Centered footer labels with improved readability
-• Stability, caching, and legacy-component cleanup improvements
