@@ -79,7 +79,8 @@ jobs:
         run: |
           test -n "$STACKUP_SUPABASE_PUBLISHABLE_KEY"
           grep -q "BuildConfig.SUPABASE_PUBLISHABLE_KEY" source/app/src/main/java/com/skyare/stackupacademy/AuthConfig.java
-          grep -q "stackupacademy://auth/callback" source/app/src/main/java/com/skyare/stackupacademy/AuthConfig.java
+          grep -q 'android:scheme="stackupacademy"' source/app/src/main/AndroidManifest.xml
+          grep -q 'android:host="auth"' source/app/src/main/AndroidManifest.xml
 
       - name: Build signed release AAB and APK
         env:
