@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: 99dfae8f089b1af9236aca2e6945a8d5b79a2ce0
+          ref: dcc8db917d6c1bfc9bdd0f63690f1ae578474276
           path: source
           persist-credentials: false
 
@@ -127,7 +127,7 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=99dfae8f089b1af9236aca2e6945a8d5b79a2ce0"
+            echo "source_commit=dcc8db917d6c1bfc9bdd0f63690f1ae578474276"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
             echo "versionName=2.1.18"
