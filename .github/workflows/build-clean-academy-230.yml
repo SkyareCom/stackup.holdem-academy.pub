@@ -1,9 +1,9 @@
-name: Build Clean Academy Play AAB 235
+name: Build Clean Academy Play AAB 237
 
 on:
   push:
     branches:
-      - main
+      - release/academy-237
     paths:
       - '.github/workflows/build-clean-academy-230.yml'
   pull_request:
@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: SkyareCom/stackup.holdem-academy.experiencia
-          ref: bae3a3d4afe0e478d6939bb55b3cf5e466f8a09c
+          ref: f214cf423ac5f68c2c063f26935c67e7eb259160
           path: source
           persist-credentials: false
 
@@ -45,8 +45,8 @@ jobs:
           test -s source/index.html
           cmp -s source/index.html source/app/src/main/assets/index.html
           grep -q "applicationId 'com.skyare.stackupacademy'" source/app/build.gradle
-          grep -q "versionCode 235" source/app/build.gradle
-          grep -q "versionName '2.1.19'" source/app/build.gradle
+          grep -q "versionCode 237" source/app/build.gradle
+          grep -q "versionName '2.1.21'" source/app/build.gradle
           grep -q 'file:///android_asset/index.html' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
           ! grep -q 'skyarecom.github.io' source/app/src/main/java/com/skyare/stackupacademy/MainActivity.java
 
@@ -90,10 +90,10 @@ jobs:
       - name: Build signed release AAB and APK
         env:
           STACKUP_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.STACKUP_SUPABASE_PUBLISHABLE_KEY }}
-          STACKUP_UPLOAD_KEYSTORE: ${{ runner.temp }}/stackup-upload.jks
-          STACKUP_UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
-          STACKUP_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
-          STACKUP_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+          ACADEMY_KEYSTORE_PATH: ${{ runner.temp }}/stackup-upload.jks
+          ACADEMY_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
+          ACADEMY_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          ACADEMY_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
         run: gradle -p source :app:bundleRelease :app:assembleRelease --stacktrace
 
       - name: Verify Play package identity and version
@@ -106,11 +106,11 @@ jobs:
           test -s "$APK"
           unzip -t "$AAB"
           jarsigner -verify -verbose -certs "$AAB"
-          "$AAPT" dump badging "$APK" | tee /tmp/academy-235-badging.txt
-          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-235-badging.txt
-          grep -q "versionCode='235'" /tmp/academy-235-badging.txt
-          grep -q "versionName='2.1.19'" /tmp/academy-235-badging.txt
-          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-235-badging.txt
+          "$AAPT" dump badging "$APK" | tee /tmp/academy-237-badging.txt
+          grep -q "package: name='com.skyare.stackupacademy'" /tmp/academy-237-badging.txt
+          grep -q "versionCode='237'" /tmp/academy-237-badging.txt
+          grep -q "versionName='2.1.21'" /tmp/academy-237-badging.txt
+          grep -q "launchable-activity: name='com.skyare.stackupacademy.MainActivity'" /tmp/academy-237-badging.txt
 
       - name: Verify AAB contains exact approved bundled front
         shell: bash
@@ -132,11 +132,11 @@ jobs:
           sha256sum "$OUT/app-release.aab" | tee "$OUT/app-release.aab.sha256"
           {
             echo "source_repo=SkyareCom/stackup.holdem-academy.experiencia"
-            echo "source_commit=bae3a3d4afe0e478d6939bb55b3cf5e466f8a09c"
+            echo "source_commit=f214cf423ac5f68c2c063f26935c67e7eb259160"
             echo "approved_front_source=validated-local-bundle"
             echo "package=com.skyare.stackupacademy"
-            echo "versionName=2.1.19"
-            echo "versionCode=235"
+            echo "versionName=2.1.21"
+            echo "versionCode=237"
             echo "front=bundled-local-only"
             echo "remote_front=false"
           } > "$OUT/RELEASE-INFO.txt"
@@ -144,7 +144,7 @@ jobs:
       - name: Upload clean Play AAB
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: stackup-academy-play-235-clean
+          name: stackup-academy-play-237-clean
           path: |
             source/app/build/outputs/bundle/release/app-release.aab
             source/app/build/outputs/bundle/release/app-release.aab.sha256
