@@ -150,3 +150,5 @@ jobs:
             source/app/build/outputs/bundle/release/app-release.aab.sha256
             source/app/build/outputs/bundle/release/RELEASE-INFO.txt
           if-no-files-found: error
+
+# trigger academy 237
