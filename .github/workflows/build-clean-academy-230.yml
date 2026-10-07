@@ -1,4 +1,5 @@
 name: Build Clean Academy Play AAB 236
+# release trigger: v236
 
 on:
   push:
