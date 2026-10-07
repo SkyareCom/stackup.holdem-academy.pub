@@ -91,10 +91,10 @@ jobs:
       - name: Build signed release AAB and APK
         env:
           STACKUP_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.STACKUP_SUPABASE_PUBLISHABLE_KEY }}
-          STACKUP_UPLOAD_KEYSTORE: ${{ runner.temp }}/stackup-upload.jks
-          STACKUP_UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
-          STACKUP_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
-          STACKUP_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+          ACADEMY_KEYSTORE_PATH: ${{ runner.temp }}/stackup-upload.jks
+          ACADEMY_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
+          ACADEMY_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          ACADEMY_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
         run: gradle -p source :app:bundleRelease :app:assembleRelease --stacktrace
 
       - name: Verify Play package identity and version
